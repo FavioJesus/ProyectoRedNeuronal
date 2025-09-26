@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Alzheimer Image Inference</title>
+  <title>UNI - GRUPO 5</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -94,13 +94,93 @@
     }
     .badge{ font-size:.75rem; padding:4px 8px; border:1px solid #203052; border-radius:999px; color:#b6c2d6 }
     .footer-note{ font-size:.85rem; color:#90a0b8; margin-top:8px }
+    
+    .footer-card{
+  display:grid; gap:18px; margin-top:18px;
+  grid-template-columns: 80px 1fr; align-items:center;
+}
+
+.footer-cols{
+  display:grid; gap:14px;
+}
+@media (min-width: 700px){
+  .footer-cols{ grid-template-columns: 1fr 1fr; }
+}
+.footer-cols h4{ margin:0 0 6px; font-size:1rem }
+.footer-list{ margin:0; padding-left:18px; color:var(--muted) }
+.footer-list li{ margin:2px 0 }
+.small-note{ color:#90a0b8; font-size:.85rem; margin-top:6px }
+.logo {
+  width: 90px;
+  height: auto;
+  border-radius: 0;         /* sin bordes redondeados */
+  background: transparent;  /* sin fondo oscuro */
+  object-fit: contain;      /* respeta proporciones */
+  filter: drop-shadow(0 0 4px rgba(0,0,0,0.4)); /* le da un realce */
+}
+/* --- Modal informativo --- */
+.modal-backdrop{
+  position:fixed; inset:0; background:rgba(0,0,0,.55);
+  display:none; align-items:center; justify-content:center; z-index:9999;
+}
+.modal-backdrop.show{ display:flex; }
+
+.modal{
+  width:min(720px, 92vw);
+  background:var(--card); color:var(--text);
+  border:1px solid var(--border); border-radius:16px;
+  box-shadow:0 20px 60px rgba(0,0,0,.45);
+  padding:20px 18px;
+}
+.modal h2{ margin:0 0 8px; font-size:1.2rem }
+.modal p{ margin:8px 0; color:var(--muted); line-height:1.6 }
+.modal .actions{ display:flex; gap:10px; justify-content:flex-end; margin-top:12px }
+.modal .row{ display:flex; align-items:center; gap:8px; margin-top:8px; color:#aab3c2 }
+.modal a{ color:var(--ring); text-decoration:none }
+.modal a:hover{ text-decoration:underline }
+.modal .btn-ghost{
+  background:transparent; border:1px solid #334155; color:var(--text);
+  padding:8px 12px; border-radius:10px; cursor:pointer;
+}
+
+
   </style>
 </head>
+<!-- Modal informativo inicial -->
+<div id="infoModalBackdrop" class="modal-backdrop" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+    <h2 id="modalTitle">Acerca del proyecto</h2>
+    <p id="modalDesc">
+      Este prototipo usa una red neuronal para apoyar un <b>pre-diagnóstico</b> de Alzheimer a partir de imágenes.
+      Fue construido con <b>FastAPI</b>, <b>TensorFlow</b> y un cuaderno en Google Colab.
+    </p>
+    <p>
+      💡 Puedes revisar el notebook aquí:
+      <a href="https://colab.research.google.com/tu_enlace_aqui" target="_blank" rel="noopener noreferrer">Notebook en Colab</a>.
+    </p>
+    <p>
+      ⚠️ <b>Importante:</b> Los resultados son de apoyo y no reemplazan una evaluación médica.
+      Siempre consulta con un profesional de la salud para un diagnóstico definitivo.
+    </p>
+
+    <label class="row">
+      <input type="checkbox" id="dontShowAgain">
+      No volver a mostrar este mensaje
+    </label>
+
+    <div class="actions">
+      <button id="modalClose" class="btn-ghost">Cerrar</button>
+      <button id="modalStart" class="btn">Entendido</button>
+    </div>
+  </div>
+</div>
+
+
 <body>
   <div class="container">
     <div class="card">
       <div class="header">
-        <h1>Alzheimer Image Inference</h1>
+        <h1>Red Neuronal - Predicción de Alzheimer</h1>
         <span class="badge" id="status">Listo</span>
       </div>
       <p class="muted">Sube una imagen (JPG/PNG/WebP) y verás la predicción del modelo.</p>
@@ -138,6 +218,37 @@
       </div>
 
       <input type="file" id="file" accept="image/*" />
+    
+    <!-- Créditos / Footer -->
+<div class="footer-card" aria-label="Créditos y miembros del equipo">
+  <!-- Logo -->
+  <img class="logo" src="/logo.png" alt="Logo de la universidad o curso">
+
+  <!-- Integrantes y profesor -->
+  <div class="footer-cols">
+    <div>
+      <h4>Integrantes</h4>
+      <ul class="footer-list">
+          <li>Ayre Orellana, Gysella Yuliana</li>
+        <li>Guevara Puente, Favio Jesús</li>
+        <li>Mollan Neyra, Karl Jurgen</li>
+        <li>Mollan Neyra, Klaus Matthew</li>
+
+      </ul>
+    </div>
+    <div>
+      <h4>Profesor</h4>
+      <ul class="footer-list">
+        <li>Mag. Ing. Julio César Morales León</li>
+        <li>Curso: Deep Learningl</li>
+        <li>Sección: A  | Grupo: 5</li>
+        <li>Semestre: 2025-II</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<p class="small-note">Proyecto Final</p>
+
     </div>
   </div>
 
@@ -216,6 +327,47 @@
         msg.textContent = '';
       }
     });
+
+    // --- Modal on load (con "no volver a mostrar") ---
+(function(){
+  const KEY = 'alzheimer-info-modal-dismissed-v1';
+  const backdrop = document.getElementById('infoModalBackdrop');
+  const btnClose = document.getElementById('modalClose');
+  const btnStart = document.getElementById('modalStart');
+  const dontShow = document.getElementById('dontShowAgain');
+
+  function openModal(){
+    backdrop.classList.add('show');
+    backdrop.setAttribute('aria-hidden','false');
+    // Focus al botón principal por accesibilidad
+    setTimeout(()=>btnStart.focus(), 10);
+    document.addEventListener('keydown', onEsc);
+    backdrop.addEventListener('click', onBackdrop);
+  }
+  function closeModal(){
+    backdrop.classList.remove('show');
+    backdrop.setAttribute('aria-hidden','true');
+    document.removeEventListener('keydown', onEsc);
+    backdrop.removeEventListener('click', onBackdrop);
+  }
+  function onEsc(e){ if(e.key === 'Escape') closeModal(); }
+  function onBackdrop(e){ if(e.target === backdrop) closeModal(); }
+
+  btnClose.addEventListener('click', ()=>{
+    if(dontShow.checked) localStorage.setItem(KEY, '1');
+    closeModal();
+  });
+  btnStart.addEventListener('click', ()=>{
+    if(dontShow.checked) localStorage.setItem(KEY, '1');
+    closeModal();
+  });
+
+  // Mostrar una sola vez si el usuario no marcó "no volver a mostrar"
+  window.addEventListener('DOMContentLoaded', ()=>{
+    if(!localStorage.getItem(KEY)) openModal();
+  });
+})();
+
   </script>
 </body>
 </html>

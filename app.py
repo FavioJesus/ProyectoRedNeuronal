@@ -9,11 +9,17 @@ from fastapi.responses import JSONResponse
 MODEL_PATH = os.getenv("MODEL_PATH", "/app/model.h5")
 
 
-CLASS_NAMES = ['MildDemented', 'ModerateDemented', 'NonDemented', 'VeryMildDemented']
+CLASS_NAMES = [
+    'Leve Demencia',        
+    'Moderada Demencia',   
+    'Sin Demencia',       
+    'Demencia Alta'     
+]
+
 
 app = FastAPI(title="Image Inference API", version="1.0")
 
-# --- arquitectura idéntica a la del notebook ---
+
 def build_model():
     return tf.keras.Sequential([
         tf.keras.layers.Rescaling(1./255, input_shape=(224, 224, 3)),
