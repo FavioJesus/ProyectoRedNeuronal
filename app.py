@@ -65,7 +65,7 @@ async def predict(file: UploadFile = File(...)):
         "label": CLASS_NAMES[top],
         "top_index": top,
         "probs": probs,
-         "class_names": CLASS_NAMES  # <-- agregado para el front
+         "class_names": CLASS_NAMES  
     })
 
 from fastapi.staticfiles import StaticFiles
